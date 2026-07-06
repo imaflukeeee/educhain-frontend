@@ -1,65 +1,139 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { TopNav } from '@/components/TopNav';
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen bg-[#f5f7fb]">
+      <TopNav />
+
+      <section className="bg-blue-600 px-6 py-16 text-center text-white">
+        <h1 className="text-3xl font-extrabold md:text-4xl">
+          ระบบออกเอกสารและตรวจสอบใบปริญญาดิจิทัล
+        </h1>
+
+        <p className="mx-auto mt-3 max-w-3xl text-sm text-blue-100">
+          ปลอดภัย ตรวจสอบได้ โปร่งใส ด้วยเทคโนโลยี Blockchain และมาตรฐาน Verifiable Credential
+        </p>
+
+        <div className="mt-6">
+          <Link
+            href="/verify"
+            className="inline-flex h-10 items-center justify-center rounded-lg bg-white px-5 text-sm font-semibold text-blue-600 hover:bg-blue-50"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            เริ่มตรวจสอบเอกสาร
+          </Link>
         </div>
-      </main>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-6 py-10">
+        <h2 className="text-center text-2xl font-bold text-slate-700">
+          ฟีเจอร์เด่นของระบบ
+        </h2>
+
+        <div className="mt-6 grid gap-5 md:grid-cols-3">
+          {[
+            {
+              title: '🔐 ปลอดภัยสูงสุด',
+              text: 'คำนวณ SHA-256 Hash จากไฟล์ PDF และใช้ Blockchain ตรวจสอบความถูกต้อง',
+            },
+            {
+              title: '🧾 ตรวจสอบได้จริง',
+              text: 'ตรวจสอบเอกสารได้ผ่าน Credential ID, Share Link หรือการอัปโหลด PDF',
+            },
+            {
+              title: '🌍 โปร่งใสและตรวจสอบย้อนหลังได้',
+              text: 'บันทึกข้อมูลสำคัญบน Polygon Amoy Testnet เพื่อป้องกันการแก้ไขย้อนหลัง',
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl bg-white p-6 text-center shadow-sm"
+            >
+              <h3 className="font-bold text-blue-600">{item.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-500">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-100 px-6 py-10">
+        <h2 className="text-center text-2xl font-bold text-slate-700">
+          เลือกบทบาทของคุณ
+        </h2>
+
+        <div className="mx-auto mt-6 grid max-w-5xl gap-5 md:grid-cols-3">
+          <RoleCard
+            title="🏫 มหาวิทยาลัย"
+            description="ออกเอกสารรับรองและบันทึก Hash ลง Blockchain"
+            loginHref="/login/issuer"
+            registerHref="/register/issuer"
+          />
+
+          <RoleCard
+            title="👨‍🎓 นักศึกษา / ศิษย์เก่า"
+            description="ดูเอกสารของตนเอง ดาวน์โหลด และสร้าง Share Link"
+            loginHref="/login/holder"
+            registerHref="/register/holder"
+          />
+
+          <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+            <h3 className="font-bold text-blue-600">🏢 ผู้ตรวจสอบ</h3>
+
+            <p className="mt-3 text-sm text-slate-500">
+              ตรวจสอบเอกสารผ่าน Credential ID หรือ Share Link
+            </p>
+
+            <Link
+              href="/verify"
+              className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700"
+            >
+              ตรวจเอกสาร
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-slate-200 bg-white px-6 py-5 text-center text-xs text-slate-500">
+        © 2025 EduChain. All Rights Reserved — Powered By Warakon
+      </footer>
+    </div>
+  );
+}
+
+function RoleCard({
+  title,
+  description,
+  loginHref,
+  registerHref,
+}: {
+  title: string;
+  description: string;
+  loginHref: string;
+  registerHref: string;
+}) {
+  return (
+    <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+      <h3 className="font-bold text-blue-600">{title}</h3>
+
+      <p className="mt-3 text-sm text-slate-500">{description}</p>
+
+      <Link
+        href={loginHref}
+        className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700"
+      >
+        เข้าสู่ระบบ
+      </Link>
+
+      <div className="mt-3">
+        <Link
+          href={registerHref}
+          className="text-sm font-semibold text-blue-600"
+        >
+          ลงทะเบียนใช้งาน
+        </Link>
+      </div>
     </div>
   );
 }

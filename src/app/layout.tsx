@@ -11,7 +11,15 @@ const notoSansThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: 'EduChain',
-  description: 'ระบบออกและตรวจสอบเอกสารวุฒิการศึกษาดิจิทัลด้วย Blockchain',
+  description: 'ระบบออกและตรวจสอบเอกสารวุฒิการศึกษาดิจิทัลด้วย ข้อมูลยืนยัน',
+  icons: {
+    icon: [
+      { url: '/favicon.ico?v=2026', type: 'image/x-icon' },
+      { url: '/educhain-logo.png?v=2026', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico?v=2026',
+    apple: '/educhain-logo.png?v=2026',
+  },
 };
 
 export default function RootLayout({

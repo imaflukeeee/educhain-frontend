@@ -4,10 +4,12 @@ export function TopNav() {
   return (
     <header className="h-16 border-b border-slate-200 bg-white">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-blue-200 bg-blue-50">
-            📄
-          </div>
+        <Link href="/" className="flex items-center gap-3">
+          <img
+            src="/educhain-logo.png"
+            alt="EduChain"
+            className="h-10 w-10 object-contain"
+          />
 
           <span className="text-xl font-bold text-slate-900">EduChain</span>
         </Link>

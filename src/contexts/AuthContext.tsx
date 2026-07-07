@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import {
   createContext,
   useCallback,
@@ -29,6 +31,25 @@ interface RegisterParams {
   password: string;
   role: UserRole;
   walletAddress?: string;
+  firstNameTh?: string;
+  lastNameTh?: string;
+  firstNameEn?: string;
+  lastNameEn?: string;
+  phone?: string;
+  birthDate?: string;
+  studentId?: string;
+  faculty?: string;
+  major?: string;
+  universityNameTh?: string;
+  universityNameEn?: string;
+  contactFirstNameTh?: string;
+  contactLastNameTh?: string;
+  contactFirstNameEn?: string;
+  contactLastNameEn?: string;
+  staffPosition?: string;
+  staffDepartment?: string;
+  website?: string;
+  address?: string;
 }
 
 interface AuthContextValue {
@@ -139,13 +160,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const register = useCallback(
-    async ({ name, email, password, role, walletAddress }: RegisterParams) => {
+    async (params: RegisterParams) => {
       const response = await api.post<RegisterResponse>('/auth/register', {
-        name,
-        email,
-        password,
-        role,
-        walletAddress: walletAddress || undefined,
+        ...params,
+        walletAddress: params.walletAddress || undefined,
       });
 
       saveSession(response.data.accessToken, response.data.user);

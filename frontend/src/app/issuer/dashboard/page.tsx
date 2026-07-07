@@ -235,10 +235,9 @@ export default function IssueCredentialPage() {
             <Input
               label="อีเมลผู้รับเอกสาร"
               type="email"
-              placeholder="ระบบจะดึงจากบัญชีนักศึกษา"
+              placeholder="เช่น student@example.com"
               value={holderEmail}
-              readOnly
-              className="cursor-not-allowed bg-slate-50 text-slate-500"
+              onChange={(event) => setHolderEmail(event.target.value)}
               required
             />
 

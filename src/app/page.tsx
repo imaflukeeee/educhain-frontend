@@ -12,7 +12,7 @@ export default function LandingPage() {
         </h1>
 
         <p className="mx-auto mt-3 max-w-3xl text-sm text-blue-100">
-          ปลอดภัย ตรวจสอบได้ โปร่งใส ด้วยเทคโนโลยี Blockchain และมาตรฐาน Verifiable Credential
+          ปลอดภัย ตรวจสอบได้ โปร่งใส ด้วยเทคโนโลยี ข้อมูลยืนยัน และมาตรฐาน Verifiable Credential
         </p>
 
         <div className="mt-6">
@@ -34,15 +34,15 @@ export default function LandingPage() {
           {[
             {
               title: '🔐 ปลอดภัยสูงสุด',
-              text: 'คำนวณ SHA-256 Hash จากไฟล์ PDF และใช้ Blockchain ตรวจสอบความถูกต้อง',
+              text: 'ตรวจเทียบไฟล์ PDF กับข้อมูลต้นฉบับ เพื่อช่วยป้องกันการปลอมแปลง',
             },
             {
               title: '🧾 ตรวจสอบได้จริง',
-              text: 'ตรวจสอบเอกสารได้ผ่าน Credential ID, Share Link หรือการอัปโหลด PDF',
+              text: 'ตรวจสอบเอกสารได้ผ่านรหัสเอกสาร ลิงก์ตรวจสอบ หรือการอัปโหลด PDF',
             },
             {
               title: '🌍 โปร่งใสและตรวจสอบย้อนหลังได้',
-              text: 'บันทึกข้อมูลสำคัญบน Polygon Amoy Testnet เพื่อป้องกันการแก้ไขย้อนหลัง',
+              text: 'บันทึกข้อมูลอ้างอิงไว้ในระบบยืนยันเอกสาร เพื่อป้องกันการแก้ไขย้อนหลัง',
             },
           ].map((item) => (
             <div
@@ -66,14 +66,14 @@ export default function LandingPage() {
         <div className="mx-auto mt-6 grid max-w-5xl gap-5 md:grid-cols-3">
           <RoleCard
             title="🏫 มหาวิทยาลัย"
-            description="ออกเอกสารรับรองและบันทึก Hash ลง Blockchain"
+            description="ออกเอกสารรับรองและยืนยันเอกสารในระบบ"
             loginHref="/login/issuer"
             registerHref="/register/issuer"
           />
 
           <RoleCard
             title="👨‍🎓 นักศึกษา / ศิษย์เก่า"
-            description="ดูเอกสารของตนเอง ดาวน์โหลด และสร้าง Share Link"
+            description="ดูเอกสารของตนเอง ดาวน์โหลด และสร้างลิงก์ตรวจสอบ"
             loginHref="/login/holder"
             registerHref="/register/holder"
           />
@@ -82,7 +82,7 @@ export default function LandingPage() {
             <h3 className="font-bold text-blue-600">🏢 ผู้ตรวจสอบ</h3>
 
             <p className="mt-3 text-sm text-slate-500">
-              ตรวจสอบเอกสารผ่าน Credential ID หรือ Share Link
+              ตรวจสอบเอกสารผ่าน รหัสเอกสาร หรือ ลิงก์ตรวจสอบ
             </p>
 
             <Link
@@ -96,7 +96,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="border-t border-slate-200 bg-white px-6 py-5 text-center text-xs text-slate-500">
-        © 2025 EduChain. All Rights Reserved — Powered By Warakon
+        © 2026 EduChain. All Rights Reserved — Powered By Warakon
       </footer>
     </div>
   );

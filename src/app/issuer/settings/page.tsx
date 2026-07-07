@@ -1,10 +1,11 @@
-import { PagePlaceholder } from '@/components/PagePlaceholder';
+import { AccountSettingsForm } from '@/components/AccountSettingsForm';
 
 export default function IssuerSettingsPage() {
   return (
-    <PagePlaceholder
+    <AccountSettingsForm
+      role="ISSUER"
       title="⚙️ ตั้งค่าบัญชีมหาวิทยาลัย"
-      description="ใช้สำหรับแสดงและจัดการข้อมูลบัญชีของมหาวิทยาลัย เช่น ชื่อหน่วยงาน อีเมล และ Wallet Address ที่ใช้ร่วมกับระบบ EduChain"
+      description="จัดการข้อมูลบัญชี ข้อมูลมหาวิทยาลัย ข้อมูลเจ้าหน้าที่ และเปลี่ยนรหัสผ่าน"
     />
   );
 }

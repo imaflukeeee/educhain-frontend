@@ -68,7 +68,7 @@ export default function LoginPage() {
             <Input
               label="อีเมล"
               type="email"
-              placeholder={isIssuer ? 'university@example.ac.th' : 'student@example.com'}
+              placeholder={isIssuer ? 'example@educhain.ac.th' : 'student@example.com'}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required

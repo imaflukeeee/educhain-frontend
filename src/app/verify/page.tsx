@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -110,7 +110,9 @@ function VerificationResultCard({ result }: { result: PublicVerificationResult }
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="text-lg font-bold">
-            {result.isValid ? '✅ เอกสารถูกต้อง' : '❌ เอกสารไม่ผ่านการตรวจสอบ'}
+            {result.isValid
+              ? '✅ เอกสารถูกต้อง'
+              : '❌ เอกสารไม่ผ่านการตรวจสอบ'}
           </div>
           <p className="mt-1 leading-6">{result.message}</p>
         </div>
@@ -189,7 +191,9 @@ function VerificationResultCard({ result }: { result: PublicVerificationResult }
             <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               สถานะเอกสาร
             </div>
-            <div className="mt-1 text-slate-700">{getStatusText(result.credential.status)}</div>
+            <div className="mt-1 text-slate-700">
+              {getStatusText(result.credential.status)}
+            </div>
           </div>
 
           <div>
@@ -198,6 +202,40 @@ function VerificationResultCard({ result }: { result: PublicVerificationResult }
             </div>
             <div className="mt-1 text-slate-700">
               {result.issuer?.name ?? '-'}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {result.uploadedFile ? (
+        <div className="mt-5 rounded-xl bg-white/70 p-4">
+          <div className="font-semibold text-slate-800">ไฟล์ที่อัปโหลด</div>
+          <div className="mt-3 grid gap-3 md:grid-cols-2">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                ชื่อไฟล์
+              </div>
+              <div className="mt-1 break-all text-slate-700">
+                {result.uploadedFile.fileName}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                ประเภทไฟล์
+              </div>
+              <div className="mt-1 text-slate-700">
+                {result.uploadedFile.mimeType}
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                SHA-256 ของไฟล์
+              </div>
+              <code className="mt-1 block break-all text-xs text-slate-700">
+                {result.uploadedFile.sha256Hash}
+              </code>
             </div>
           </div>
         </div>
@@ -247,7 +285,9 @@ function VerificationResultCard({ result }: { result: PublicVerificationResult }
               เปิดเลขอ้างอิง: {middleEllipsis(result.blockchain?.transactionHash)}
             </a>
           ) : (
-            <div className="text-xs text-slate-400">ยังไม่มีเลขอ้างอิงการยืนยัน</div>
+            <div className="text-xs text-slate-400">
+              ยังไม่มีเลขอ้างอิงการยืนยัน
+            </div>
           )}
 
           {issuerUrl ? (
@@ -293,20 +333,29 @@ export default function VerifyPage() {
       return;
     }
 
-    if (target.type === 'share' && selectedFile) {
-      setError('การตรวจด้วย ลิงก์ตรวจสอบ ไม่รองรับการอัปโหลดไฟล์ กรุณาลบไฟล์ออกหรือใช้ รหัสเอกสาร');
-      return;
-    }
-
     setError('');
     setResult(null);
     setIsSubmitting(true);
 
     try {
       if (target.type === 'share') {
-        const response = await api.get<PublicVerificationResult>(
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append('file', selectedFile);
+
+          const response = await api.post<PublicVerificationResult>(
+            `/credentials/share/${target.token}/verify`,
+            formData,
+          );
+
+          setResult(response.data);
+          return;
+        }
+
+        const response = await api.post<PublicVerificationResult>(
           `/credentials/share/${target.token}/verify`,
         );
+
         setResult(response.data);
         return;
       }
@@ -377,7 +426,7 @@ export default function VerifyPage() {
             <div className="mt-6">
               <Input
                 label="รหัสเอกสาร / ลิงก์ตรวจสอบ"
-                placeholder="เช่น รหัสเอกสาร หรือ ลิงก์ตรวจสอบที่ได้รับ"
+                placeholder="เช่น รหัสเอกสาร หรือลิงก์ตรวจสอบที่ได้รับ"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
               />

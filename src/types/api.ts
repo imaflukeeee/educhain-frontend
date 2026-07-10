@@ -14,6 +14,11 @@ export type CredentialStatus = 'PENDING' | 'VERIFIED' | 'INVALID';
 
 export type ShareLinkStatus = 'ACTIVE' | 'EXPIRED' | 'REVOKED';
 
+export interface UniversityMaster { id: string; nameTh: string; nameEn: string; }
+export interface RegisteredUniversity { id: string; master: { nameTh: string; nameEn: string } }
+export interface MajorOption { id: string; nameTh: string; nameEn?: string | null; isActive: boolean; }
+export interface FacultyOption { id: string; nameTh: string; nameEn?: string | null; isActive: boolean; majors: MajorOption[]; }
+
 export interface UniversityOwnerSummary {
   id: string;
   email: string;
@@ -48,6 +53,12 @@ export interface AuthUser {
   staffDepartment?: string | null;
   website?: string | null;
   address?: string | null;
+  addressDetail?: string | null;
+  province?: string | null;
+  district?: string | null;
+  subDistrict?: string | null;
+  postalCode?: string | null;
+  universityId?: string | null;
   issuerAccountType?: IssuerAccountType | null;
   universityOwnerId?: string | null;
   universityOwner?: UniversityOwnerSummary | null;

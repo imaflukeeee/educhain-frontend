@@ -43,6 +43,8 @@ interface RegisterParams {
   major?: string;
   universityNameTh?: string;
   universityNameEn?: string;
+  universityMasterId?: string;
+  universityId?: string;
   contactFirstNameTh?: string;
   contactLastNameTh?: string;
   contactFirstNameEn?: string;
@@ -51,6 +53,12 @@ interface RegisterParams {
   staffDepartment?: string;
   website?: string;
   address?: string;
+  addressDetail: string;
+  province: string;
+  district: string;
+  subDistrict: string;
+  postalCode: string;
+  nationalId?: string;
 }
 
 interface AuthContextValue {

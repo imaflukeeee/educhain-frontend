@@ -26,6 +26,11 @@ const issuerMenu = [
     icon: '✒️',
   },
   {
+    label: 'คณะและสาขาวิชา',
+    href: '/issuer/university',
+    icon: '🏫',
+  },
+  {
     label: 'ตั้งค่าบัญชี',
     href: '/issuer/settings',
     icon: '⚙️',

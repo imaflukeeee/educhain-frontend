@@ -7,10 +7,10 @@ import { api, getApiErrorMessage } from '@/lib/api';
 import type { FacultyOption, NamePrefix, StudentClaimStatus, StudentRecord } from '@/types/api';
 
 const statusLabels: Record<StudentClaimStatus, string> = {
-  UNCLAIMED: 'รอนักศึกษารับข้อมูล',
-  CLAIMED: 'Claim สำเร็จ',
-  REVIEW_REQUIRED: 'ต้องตรวจสอบ',
-  REJECTED: 'ปฏิเสธ',
+  UNCLAIMED: 'รอเชื่อมบัญชี',
+  CLAIMED: 'เชื่อมบัญชีสำเร็จ',
+  REVIEW_REQUIRED: 'ข้อมูลต้องตรวจสอบ',
+  REJECTED: 'ไม่ผ่านการตรวจสอบ',
 };
 
 interface NewStudentForm {
@@ -157,7 +157,7 @@ export default function StudentsPage() {
       });
 
       const response = await api.post<{ total: number; success: number; failed: number }>('/students/import', { rows });
-      setMessage(`นำเข้า ${response.data.success}/${response.data.total} รายการ ไม่สำเร็จ ${response.data.failed} รายการ`);
+      setMessage(`นำเข้ารายชื่อนักศึกษาสำเร็จ ${response.data.success} จาก ${response.data.total} รายการ และไม่สำเร็จ ${response.data.failed} รายการ`);
       await load();
     } catch (err) {
       setError(getApiErrorMessage(err));
@@ -184,14 +184,14 @@ export default function StudentsPage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-2xl font-bold text-slate-800">นักศึกษาทั้งหมด</h2>
-            <p className="mt-1 text-sm text-slate-500">เพิ่ม นำเข้า และตรวจสอบสถานะ Claim ของนักศึกษา</p>
+            <p className="mt-1 text-sm text-slate-500">เพิ่มหรือนำเข้ารายชื่อนักศึกษา พร้อมตรวจสอบสถานะการเชื่อมบัญชี</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={downloadTemplate} className="rounded-lg border px-4 py-2 text-sm font-semibold text-slate-600">
-              ดาวน์โหลด CSV Template
+              ดาวน์โหลดไฟล์ตัวอย่าง CSV
             </button>
             <label className="cursor-pointer rounded-lg border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600">
-              นำเข้า CSV
+              นำเข้ารายชื่อนักศึกษา
               <input type="file" accept=".csv,text/csv" onChange={importCsv} className="hidden" />
             </label>
             <Button type="button" onClick={() => setShowForm((value) => !value)}>
@@ -203,10 +203,10 @@ export default function StudentsPage() {
         <div className="mt-5 flex flex-wrap gap-2">
           {[
             ['', 'ทั้งหมด'],
-            ['UNCLAIMED', 'รอ Claim'],
-            ['CLAIMED', 'Claim สำเร็จ'],
-            ['REVIEW_REQUIRED', 'ต้องตรวจสอบ'],
-            ['REJECTED', 'ปฏิเสธ'],
+            ['UNCLAIMED', 'รอเชื่อมบัญชี'],
+            ['CLAIMED', 'เชื่อมบัญชีสำเร็จ'],
+            ['REVIEW_REQUIRED', 'ข้อมูลต้องตรวจสอบ'],
+            ['REJECTED', 'ไม่ผ่านการตรวจสอบ'],
           ].map(([value, label]) => (
             <button
               key={value}

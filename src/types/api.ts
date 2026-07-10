@@ -396,3 +396,83 @@ export interface WorkflowCredential extends Credential {
   reviewedBy?: { name: string; email: string } | null;
   approvedBy?: { name: string; email: string } | null;
 }
+
+
+export type DocumentRequestType =
+  | 'STUDENT_STATUS_CERTIFICATE'
+  | 'TRANSCRIPT'
+  | 'DEGREE_CERTIFICATE'
+  | 'GRADUATION_CERTIFICATE'
+  | 'STUDENT_CARD'
+  | 'OTHER';
+
+export type DocumentRequestStatus =
+  | 'SUBMITTED'
+  | 'RECEIVED'
+  | 'IN_PROGRESS'
+  | 'NEED_MORE_INFORMATION'
+  | 'REJECTED'
+  | 'COMPLETED'
+  | 'CANCELLED';
+
+export interface DocumentRequest {
+  id: string;
+  type: DocumentRequestType;
+  customTypeName?: string | null;
+  purpose?: string | null;
+  details?: string | null;
+  status: DocumentRequestStatus;
+  staffNote?: string | null;
+  rejectionReason?: string | null;
+  submittedAt: string;
+  createdAt: string;
+  holder?: {
+    id: string;
+    name: string;
+    email: string;
+    studentId?: string | null;
+    faculty?: string | null;
+    major?: string | null;
+  };
+  credential?: {
+    id: string;
+    credentialId: string;
+    documentTitle: string;
+    status: CredentialStatus;
+  } | null;
+}
+
+export interface DocumentTemplate {
+  id: string;
+  name: string;
+  documentType: DocumentRequestType;
+  customTypeName?: string | null;
+  description?: string | null;
+  content: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt: string;
+}
+
+export type CredentialBatchStatus =
+  | 'DRAFT'
+  | 'PREPARING'
+  | 'PENDING_REVIEW'
+  | 'PENDING_APPROVAL'
+  | 'PROCESSING'
+  | 'COMPLETED'
+  | 'PARTIALLY_COMPLETED'
+  | 'FAILED';
+
+export interface CredentialBatch {
+  id: string;
+  name: string;
+  documentType: DocumentRequestType;
+  academicYear?: string | null;
+  status: CredentialBatchStatus;
+  totalCount: number;
+  successCount: number;
+  failedCount: number;
+  note?: string | null;
+  createdAt: string;
+  template?: DocumentTemplate | null;
+}

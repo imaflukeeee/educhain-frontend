@@ -26,6 +26,21 @@ const issuerMenu = [
     icon: '🎓',
   },
   {
+    label: 'คำร้องเอกสาร',
+    href: '/issuer/requests',
+    icon: '📨',
+  },
+  {
+    label: 'แม่แบบเอกสาร',
+    href: '/issuer/templates',
+    icon: '📝',
+  },
+  {
+    label: 'ออกเอกสารจำนวนมาก',
+    href: '/issuer/batches',
+    icon: '📚',
+  },
+  {
     label: 'ตรวจสอบและอนุมัติเอกสาร',
     href: '/issuer/workflow',
     icon: '✅',

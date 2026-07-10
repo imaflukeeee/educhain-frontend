@@ -11,6 +11,11 @@ const holderMenu = [
     icon: '/educhain-logo.png',
   },
   {
+    label: 'คำร้องเอกสารของฉัน',
+    href: '/holder/requests',
+    icon: '📨',
+  },
+  {
     label: 'แชร์เอกสาร',
     href: '/holder/share',
     icon: '🔗',

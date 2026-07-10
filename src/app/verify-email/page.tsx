@@ -1,110 +1,103 @@
 'use client';
 
+import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { Button } from '@/components/Button';
+import { TopNav } from '@/components/TopNav';
 import { api, getApiErrorMessage } from '@/lib/api';
 
 function VerifyEmailContent() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const params = useSearchParams();
+  const token = params.get('token');
+  const role = params.get('role');
+  const loginPath =
+    role === 'ISSUER'
+      ? '/login/issuer'
+      : role === 'HOLDER'
+        ? '/login/holder'
+        : '/login';
 
-  const [status, setStatus] = useState<
-    'loading' | 'success' | 'error'
-  >('loading');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('กำลังยืนยันอีเมล...');
 
   useEffect(() => {
-    async function verifyEmail() {
-      if (!token) {
-        setStatus('error');
-        setMessage('ไม่พบรหัสยืนยันอีเมล');
-        return;
-      }
-
-      try {
-        const response = await api.post<{ message: string }>(
-          '/auth/verify-email',
-          { token },
-        );
-
-        setStatus('success');
-        setMessage(response.data.message || 'ยืนยันอีเมลสำเร็จ');
-      } catch (error) {
-        setStatus('error');
-        setMessage(getApiErrorMessage(error));
-      }
+    if (!token) {
+      setStatus('error');
+      setMessage('ไม่พบรหัสยืนยันอีเมล');
+      return;
     }
 
-    void verifyEmail();
+    api
+      .post<{ message: string }>('/auth/verify-email', { token })
+      .then((response) => {
+        setStatus('success');
+        setMessage(response.data.message);
+      })
+      .catch((error) => {
+        setStatus('error');
+        setMessage(getApiErrorMessage(error));
+      });
   }, [token]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
-        {status === 'loading' ? (
-          <>
-            <div className="text-4xl">⏳</div>
-            <h1 className="mt-4 text-xl font-bold text-slate-800">
-              กำลังยืนยันอีเมล
-            </h1>
-          </>
-        ) : null}
-
-        {status === 'success' ? (
-          <>
-            <div className="text-4xl">✅</div>
-            <h1 className="mt-4 text-xl font-bold text-green-700">
-              ยืนยันอีเมลสำเร็จ
-            </h1>
-          </>
-        ) : null}
-
-        {status === 'error' ? (
-          <>
-            <div className="text-4xl">❌</div>
-            <h1 className="mt-4 text-xl font-bold text-red-700">
-              ไม่สามารถยืนยันอีเมลได้
-            </h1>
-          </>
-        ) : null}
-
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          {message}
-        </p>
-
-        {status !== 'loading' ? (
-          <Link
-            href="/login"
-            className="mt-6 inline-flex rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+    <div className="min-h-screen bg-[#f5f7fb]">
+      <TopNav />
+      <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
+        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
+          <div
+            className={[
+              'mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl',
+              status === 'success'
+                ? 'bg-green-100 text-green-700'
+                : status === 'error'
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-blue-100 text-blue-700',
+            ].join(' ')}
           >
-            ไปหน้าเข้าสู่ระบบ
-          </Link>
-        ) : null}
-      </div>
-    </main>
+            {status === 'success' ? '✓' : status === 'error' ? '!' : '…'}
+          </div>
+
+          <h1 className="mt-5 text-xl font-bold text-slate-800">
+            ยืนยันอีเมล
+          </h1>
+          <p className="mt-3 text-sm leading-6 text-slate-600">{message}</p>
+
+          {status !== 'loading' ? (
+            <Link href={loginPath}>
+              <Button type="button" fullWidth className="mt-6">
+                ไปหน้าเข้าสู่ระบบ
+              </Button>
+            </Link>
+          ) : null}
+        </div>
+      </main>
+    </div>
   );
 }
 
-function VerifyEmailLoading() {
+function VerifyEmailFallback() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
-        <div className="text-4xl">⏳</div>
-        <h1 className="mt-4 text-xl font-bold text-slate-800">
-          กำลังเปิดหน้าตรวจสอบ
-        </h1>
-        <p className="mt-3 text-sm text-slate-600">
-          กรุณารอสักครู่
-        </p>
-      </div>
-    </main>
+    <div className="min-h-screen bg-[#f5f7fb]">
+      <TopNav />
+      <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
+        <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-2xl text-blue-700">
+            …
+          </div>
+          <h1 className="mt-5 text-xl font-bold text-slate-800">
+            กำลังเปิดหน้าตรวจสอบ
+          </h1>
+          <p className="mt-3 text-sm text-slate-600">กรุณารอสักครู่</p>
+        </div>
+      </main>
+    </div>
   );
 }
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={<VerifyEmailLoading />}>
+    <Suspense fallback={<VerifyEmailFallback />}>
       <VerifyEmailContent />
     </Suspense>
   );

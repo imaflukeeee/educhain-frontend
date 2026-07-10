@@ -6,7 +6,7 @@ import { FormEvent, useMemo, useState } from 'react';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { useAuth } from '@/contexts/AuthContext';
-import type { UserRole } from '@/types/api';
+import type { NamePrefix, UserRole } from '@/types/api';
 
 function getRoleFromParam(roleParam: string | string[] | undefined): UserRole {
   const value = Array.isArray(roleParam) ? roleParam[0] : roleParam;
@@ -25,6 +25,7 @@ export default function RegisterPage() {
     ? 'สำหรับมหาวิทยาลัยหรือหน่วยงานที่ต้องการออกเอกสารรับรองให้นักศึกษา'
     : 'สำหรับนักศึกษาที่ต้องการรับและแชร์เอกสารรับรองของตนเอง';
 
+  const [namePrefix, setNamePrefix] = useState<NamePrefix | ''>('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -103,7 +104,7 @@ export default function RegisterPage() {
       return;
     }
 
-    const requiredCommon = [email, phone, universityNameTh, universityNameEn];
+    const requiredCommon = [namePrefix, email, phone, universityNameTh, universityNameEn];
     const requiredByRole = isIssuer
       ? [contactFirstNameTh, contactLastNameTh, staffPosition, staffDepartment, address]
       : [firstNameTh, lastNameTh, birthDate, studentId, faculty, major];
@@ -121,6 +122,7 @@ export default function RegisterPage() {
           ? {
               role,
               name,
+              namePrefix,
               email,
               password,
               phone,
@@ -138,6 +140,7 @@ export default function RegisterPage() {
           : {
               role,
               name,
+              namePrefix,
               email,
               password,
               firstNameTh,
@@ -195,6 +198,22 @@ export default function RegisterPage() {
                 <h2 className="text-lg font-bold text-slate-800">ข้อมูลผู้ดูแลบัญชีหลัก</h2>
                 <p className="mt-2 text-sm text-slate-500">บัญชีนี้จะใช้เพิ่มและจัดการบัญชีเจ้าหน้าที่ทะเบียนของมหาวิทยาลัย</p>
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1 block text-sm font-medium text-slate-700">
+                      คำนำหน้าชื่อ
+                    </span>
+                    <select
+                      value={namePrefix}
+                      onChange={(event) => setNamePrefix(event.target.value as NamePrefix | '')}
+                      required
+                      className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                    >
+                      <option value="">เลือกคำนำหน้าชื่อ</option>
+                      <option value="MR">นาย</option>
+                      <option value="MISS">นางสาว</option>
+                      <option value="MRS">นาง</option>
+                    </select>
+                  </label>
                   <Input label="ชื่อ (ภาษาไทย)" placeholder="เช่น สมชาย" value={contactFirstNameTh} onChange={(event) => setContactFirstNameTh(event.target.value)} />
                   <Input label="นามสกุล (ภาษาไทย)" placeholder="เช่น ใจดี" value={contactLastNameTh} onChange={(event) => setContactLastNameTh(event.target.value)} />
                   <Input label="ชื่อ (ภาษาอังกฤษ)" placeholder="เช่น Somchai" value={contactFirstNameEn} onChange={(event) => setContactFirstNameEn(event.target.value)} />
@@ -208,6 +227,22 @@ export default function RegisterPage() {
             <section>
               <h2 className="text-lg font-bold text-slate-800">ข้อมูลนักศึกษา</h2>
               <div className="mt-5 grid gap-4 md:grid-cols-2">
+                <label className="block">
+                  <span className="mb-1 block text-sm font-medium text-slate-700">
+                    คำนำหน้าชื่อ
+                  </span>
+                  <select
+                    value={namePrefix}
+                    onChange={(event) => setNamePrefix(event.target.value as NamePrefix | '')}
+                    required
+                    className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                  >
+                    <option value="">เลือกคำนำหน้าชื่อ</option>
+                    <option value="MR">นาย</option>
+                    <option value="MISS">นางสาว</option>
+                    <option value="MRS">นาง</option>
+                  </select>
+                </label>
                 <Input label="ชื่อ (ภาษาไทย)" placeholder="เช่น ธนกฤต" value={firstNameTh} onChange={(event) => setFirstNameTh(event.target.value)} required />
                 <Input label="นามสกุล (ภาษาไทย)" placeholder="เช่น ใจดี" value={lastNameTh} onChange={(event) => setLastNameTh(event.target.value)} required />
                 <Input label="ชื่อ (ภาษาอังกฤษ)" placeholder="เช่น Thanakrit" value={firstNameEn} onChange={(event) => setFirstNameEn(event.target.value)} />

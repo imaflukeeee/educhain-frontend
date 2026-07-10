@@ -31,6 +31,7 @@ interface RegisterParams {
   password: string;
   role: UserRole;
   walletAddress?: string;
+  namePrefix: 'MR' | 'MISS' | 'MRS';
   firstNameTh?: string;
   lastNameTh?: string;
   firstNameEn?: string;

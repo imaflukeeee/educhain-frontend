@@ -1,5 +1,7 @@
 export type UserRole = 'ISSUER' | 'HOLDER';
 
+export type NamePrefix = 'MR' | 'MISS' | 'MRS';
+
 export type IssuerAccountType = 'UNIVERSITY_ADMIN' | 'REGISTRAR_STAFF';
 
 export type StaffPermission =
@@ -26,6 +28,7 @@ export interface AuthUser {
   name: string;
   role: UserRole;
   walletAddress: string | null;
+  namePrefix?: NamePrefix | null;
   firstNameTh?: string | null;
   lastNameTh?: string | null;
   firstNameEn?: string | null;
@@ -56,6 +59,7 @@ export interface AuthUser {
 }
 
 export interface ProfilePayload {
+  namePrefix?: NamePrefix;
   name?: string;
   firstNameTh?: string;
   lastNameTh?: string;

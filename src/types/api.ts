@@ -442,37 +442,4 @@ export interface DocumentRequest {
   } | null;
 }
 
-export interface DocumentTemplate {
-  id: string;
-  name: string;
-  documentType: DocumentRequestType;
-  customTypeName?: string | null;
-  description?: string | null;
-  content: string;
-  status: 'ACTIVE' | 'INACTIVE';
-  createdAt: string;
-}
 
-export type CredentialBatchStatus =
-  | 'DRAFT'
-  | 'PREPARING'
-  | 'PENDING_REVIEW'
-  | 'PENDING_APPROVAL'
-  | 'PROCESSING'
-  | 'COMPLETED'
-  | 'PARTIALLY_COMPLETED'
-  | 'FAILED';
-
-export interface CredentialBatch {
-  id: string;
-  name: string;
-  documentType: DocumentRequestType;
-  academicYear?: string | null;
-  status: CredentialBatchStatus;
-  totalCount: number;
-  successCount: number;
-  failedCount: number;
-  note?: string | null;
-  createdAt: string;
-  template?: DocumentTemplate | null;
-}

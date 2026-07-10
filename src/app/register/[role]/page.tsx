@@ -234,6 +234,7 @@ export default function RegisterPage() {
                     onChange={(event) =>
                       setUniversityNameEn(event.target.value)
                     }
+                  required
                   />
                   <Input
                     label="เบอร์โทรศัพท์มหาวิทยาลัย"
@@ -241,6 +242,7 @@ export default function RegisterPage() {
                     placeholder="เช่น 026976000"
                     value={phone}
                     onChange={(event) => setPhone(event.target.value)}
+                  required
                   />
                   <Input
                     label="เว็บไซต์"
@@ -252,13 +254,14 @@ export default function RegisterPage() {
                 </div>
                 <label className="mt-4 block">
                   <span className="mb-1 block text-sm font-medium text-slate-700">
-                    ที่อยู่มหาวิทยาลัย
+                    ที่อยู่มหาวิทยาลัย <span className="text-red-500">*</span>
                   </span>
                   <textarea
                     className="min-h-24 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition placeholder:text-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     placeholder="กรอกที่อยู่สำหรับติดต่อ"
                     value={address}
                     onChange={(event) => setAddress(event.target.value)}
+                    required
                   />
                 </label>
               </section>
@@ -270,10 +273,10 @@ export default function RegisterPage() {
                 <p className="mt-2 text-sm text-slate-500">
                   บัญชีนี้จะใช้เพิ่มและจัดการบัญชีเจ้าหน้าที่ทะเบียนของมหาวิทยาลัย
                 </p>
-                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                <div className="mt-5 grid gap-4 md:grid-cols-3">
                   <label className="block">
                     <span className="mb-1 block text-sm font-medium text-slate-700">
-                      คำนำหน้าชื่อ
+                      คำนำหน้าชื่อ <span className="text-red-500">*</span>
                     </span>
                     <select
                       value={namePrefix}
@@ -296,6 +299,7 @@ export default function RegisterPage() {
                     onChange={(event) =>
                       setContactFirstNameTh(event.target.value)
                     }
+                  required
                   />
                   <Input
                     label="นามสกุล (ภาษาไทย)"
@@ -304,6 +308,7 @@ export default function RegisterPage() {
                     onChange={(event) =>
                       setContactLastNameTh(event.target.value)
                     }
+                  required
                   />
                   <Input
                     label="ชื่อ (ภาษาอังกฤษ)"
@@ -326,12 +331,14 @@ export default function RegisterPage() {
                     placeholder="เช่น หัวหน้างานทะเบียน"
                     value={staffPosition}
                     onChange={(event) => setStaffPosition(event.target.value)}
+                  required
                   />
                   <Input
                     label="หน่วยงาน"
                     placeholder="เช่น สำนักทะเบียนและประมวลผล"
                     value={staffDepartment}
                     onChange={(event) => setStaffDepartment(event.target.value)}
+                  required
                   />
                 </div>
               </section>
@@ -341,10 +348,10 @@ export default function RegisterPage() {
               <h2 className="text-lg font-bold text-slate-800">
                 ข้อมูลนักศึกษา
               </h2>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <div className="mt-5 grid gap-4 md:grid-cols-3">
                 <label className="block">
                   <span className="mb-1 block text-sm font-medium text-slate-700">
-                    คำนำหน้าชื่อ
+                    คำนำหน้าชื่อ <span className="text-red-500">*</span>
                   </span>
                   <select
                     value={namePrefix}
@@ -391,6 +398,7 @@ export default function RegisterPage() {
                   placeholder="เช่น 2410717302050"
                   value={studentId}
                   onChange={(event) => setStudentId(event.target.value)}
+                required
                 />
                 <Input
                   label="เบอร์โทรศัพท์"
@@ -398,12 +406,14 @@ export default function RegisterPage() {
                   placeholder="เช่น 0812345678"
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
+                required
                 />
                 <Input
                   label="วันเดือนปีเกิด"
                   type="date"
                   value={birthDate}
                   onChange={(event) => setBirthDate(event.target.value)}
+                required
                 />
                 <Input
                   label="อายุ"
@@ -421,24 +431,28 @@ export default function RegisterPage() {
                   placeholder="เช่น วิศวกรรมศาสตร์"
                   value={faculty}
                   onChange={(event) => setFaculty(event.target.value)}
+                required
                 />
                 <Input
                   label="สาขา"
                   placeholder="เช่น วิศวกรรมคอมพิวเตอร์"
                   value={major}
                   onChange={(event) => setMajor(event.target.value)}
+                required
                 />
                 <Input
                   label="ชื่อมหาวิทยาลัย (ภาษาไทย)"
                   placeholder="เช่น มหาวิทยาลัยหอการค้าไทย"
                   value={universityNameTh}
                   onChange={(event) => setUniversityNameTh(event.target.value)}
+                required
                 />
                 <Input
                   label="ชื่อมหาวิทยาลัย (ภาษาอังกฤษ)"
                   placeholder="เช่น University of the Thai Chamber of Commerce"
                   value={universityNameEn}
                   onChange={(event) => setUniversityNameEn(event.target.value)}
+                required
                 />
               </div>
             </section>

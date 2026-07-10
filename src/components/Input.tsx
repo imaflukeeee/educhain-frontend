@@ -5,11 +5,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-export function Input({ label, error, className = '', ...props }: InputProps) {
+export function Input({ label, error, required, className = '', ...props }: InputProps) {
   return (
     <label className="block">
       <span className="mb-1 block text-sm font-medium text-slate-700">
         {label}
+        {required ? (
+          <span className="ml-1 text-red-500" aria-hidden="true">
+            *
+          </span>
+        ) : null}
       </span>
 
       <input
@@ -18,6 +23,7 @@ export function Input({ label, error, className = '', ...props }: InputProps) {
           error ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : '',
           className,
         ].join(' ')}
+        required={required}
         {...props}
       />
 

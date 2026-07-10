@@ -331,3 +331,68 @@ export interface VerifyChainResponse {
     timestamp: number;
   };
 }
+
+
+export type StudentClaimStatus = 'UNCLAIMED' | 'CLAIMED' | 'REVIEW_REQUIRED' | 'REJECTED';
+export type CredentialWorkflowStatus =
+  | 'DRAFT'
+  | 'PENDING_REVIEW'
+  | 'CHANGES_REQUESTED'
+  | 'PENDING_APPROVAL'
+  | 'REJECTED'
+  | 'APPROVED'
+  | 'ISSUED';
+
+export interface StudentRecord {
+  id: string;
+  studentId: string;
+  namePrefix?: NamePrefix | null;
+  firstNameTh: string;
+  lastNameTh: string;
+  firstNameEn?: string | null;
+  lastNameEn?: string | null;
+  birthDate: string;
+  email?: string | null;
+  claimStatus: StudentClaimStatus;
+  claimedAt?: string | null;
+  isActive: boolean;
+  faculty?: { id: string; nameTh: string } | null;
+  major?: { id: string; nameTh: string } | null;
+  claimedBy?: { id: string; name: string; email: string } | null;
+  createdAt: string;
+}
+
+export interface Phase3Dashboard {
+  students: {
+    total: number;
+    claimed: number;
+    unclaimed: number;
+    reviewRequired: number;
+  };
+  workflow: {
+    draft: number;
+    pendingReview: number;
+    pendingApproval: number;
+    changesRequested: number;
+    approved: number;
+    issued: number;
+  };
+  recentAudit: Array<{
+    id: string;
+    action: string;
+    entityType: string;
+    createdAt: string;
+    actor?: { name: string; email: string } | null;
+  }>;
+}
+
+export interface WorkflowCredential extends Credential {
+  workflowStatus: CredentialWorkflowStatus;
+  workflowNote?: string | null;
+  submittedAt?: string | null;
+  reviewedAt?: string | null;
+  approvedAt?: string | null;
+  preparedBy?: { name: string; email: string } | null;
+  reviewedBy?: { name: string; email: string } | null;
+  approvedBy?: { name: string; email: string } | null;
+}

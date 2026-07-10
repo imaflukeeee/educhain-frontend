@@ -6,6 +6,11 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const issuerMenu = [
   {
+    label: 'Dashboard',
+    href: '/issuer/overview',
+    icon: '📊',
+  },
+  {
     label: 'ออกเอกสารรับรองใบปริญญา',
     href: '/issuer/dashboard',
     icon: '/educhain-logo.png',
@@ -14,6 +19,16 @@ const issuerMenu = [
     label: 'รายการใบรับรองที่ถูกออก',
     href: '/issuer/credentials',
     icon: '🗂️',
+  },
+  {
+    label: 'นักศึกษาทั้งหมด',
+    href: '/issuer/students',
+    icon: '🎓',
+  },
+  {
+    label: 'Workflow เอกสาร',
+    href: '/issuer/workflow',
+    icon: '✅',
   },
   {
     label: 'จัดการเจ้าหน้าที่',

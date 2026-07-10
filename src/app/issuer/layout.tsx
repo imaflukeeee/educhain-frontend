@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const issuerMenu = [
   {
-    label: 'Dashboard',
+    label: 'ภาพรวมระบบ',
     href: '/issuer/overview',
     icon: '📊',
   },
@@ -26,7 +26,7 @@ const issuerMenu = [
     icon: '🎓',
   },
   {
-    label: 'Workflow เอกสาร',
+    label: 'ตรวจสอบและอนุมัติเอกสาร',
     href: '/issuer/workflow',
     icon: '✅',
   },
@@ -41,7 +41,7 @@ const issuerMenu = [
     icon: '✒️',
   },
   {
-    label: 'คณะและสาขาวิชา',
+    label: 'จัดการคณะและสาขาวิชา',
     href: '/issuer/university',
     icon: '🏫',
   },

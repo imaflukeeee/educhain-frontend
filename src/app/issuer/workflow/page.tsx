@@ -14,7 +14,7 @@ const labels: Record<CredentialWorkflowStatus, string> = {
   ISSUED: 'ออกสำเร็จ',
 };
 
-export default function WorkflowPage() {
+export default function DocumentApprovalPage() {
   const [items, setItems] = useState<WorkflowCredential[]>([]);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
@@ -44,7 +44,7 @@ export default function WorkflowPage() {
     setMessage('');
     try {
       await api.post(`/workflow/${id}/${actionName}`, { note });
-      setMessage('อัปเดต Workflow เรียบร้อยแล้ว');
+      setMessage('อัปเดตสถานะเอกสารเรียบร้อยแล้ว');
       await load();
     } catch (err) {
       setError(getApiErrorMessage(err));
@@ -54,8 +54,8 @@ export default function WorkflowPage() {
   return (
     <div className="space-y-6">
       <section className="rounded-2xl bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold text-slate-800">Workflow เอกสาร</h2>
-        <p className="mt-1 text-sm text-slate-500">ผู้จัดเตรียม → ผู้ตรวจสอบ → ผู้อนุมัติ → ออกเอกสาร</p>
+        <h2 className="text-2xl font-bold text-slate-800">ตรวจสอบและอนุมัติเอกสาร</h2>
+        <p className="mt-1 text-sm text-slate-500">ติดตามเอกสารตั้งแต่จัดเตรียม ตรวจสอบ อนุมัติ จนถึงออกเอกสารสำเร็จ</p>
         <div className="mt-5 flex flex-wrap gap-2">
           {[['', 'ทั้งหมด'], ...Object.entries(labels)].map(([value, label]) => (
             <button key={value} type="button" onClick={() => setStatus(value)}
@@ -101,7 +101,7 @@ export default function WorkflowPage() {
             </div>
           </article>
         ))}
-        {items.length === 0 ? <div className="rounded-2xl bg-white p-10 text-center text-slate-400 shadow-sm">ยังไม่มีเอกสารใน Workflow</div> : null}
+        {items.length === 0 ? <div className="rounded-2xl bg-white p-10 text-center text-slate-400 shadow-sm">ยังไม่มีเอกสารในขั้นตอนการตรวจสอบและอนุมัติ</div> : null}
       </section>
     </div>
   );

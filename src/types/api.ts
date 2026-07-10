@@ -50,6 +50,7 @@ export interface AuthUser {
   universityOwner?: UniversityOwnerSummary | null;
   permissions?: string[];
   isActive?: boolean;
+  emailVerifiedAt?: string | null;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -94,8 +95,9 @@ export interface LoginResponse {
 
 export interface RegisterResponse {
   message: string;
-  user: AuthUser;
-  accessToken: string;
+  email: string;
+  requiresEmailVerification: boolean;
+  verificationUrl?: string;
 }
 
 export interface UpdateWalletResponse {

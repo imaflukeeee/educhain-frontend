@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const role = getRoleFromParam(params.role);
   const isIssuer = role === 'ISSUER';
 
-  const title = isIssuer ? 'สมัครบัญชีมหาวิทยาลัย' : 'สมัครบัญชีนักศึกษา';
+  const title = isIssuer ? 'ลงทะเบียนมหาวิทยาลัย' : 'ลงทะเบียนบัญชีนักศึกษา';
   const subtitle = isIssuer
     ? 'สำหรับมหาวิทยาลัยหรือหน่วยงานที่ต้องการออกเอกสารรับรองให้นักศึกษา'
     : 'สำหรับนักศึกษาที่ต้องการรับและแชร์เอกสารรับรองของตนเอง';
@@ -44,13 +44,15 @@ export default function RegisterPage() {
   const [contactLastNameTh, setContactLastNameTh] = useState('');
   const [contactFirstNameEn, setContactFirstNameEn] = useState('');
   const [contactLastNameEn, setContactLastNameEn] = useState('');
-  const [staffPosition, setStaffPosition] = useState('เจ้าหน้าที่ทะเบียน');
-  const [staffDepartment, setStaffDepartment] = useState('งานทะเบียนและวัดผล');
+  const [staffPosition, setStaffPosition] = useState('');
+  const [staffDepartment, setStaffDepartment] = useState('');
   const [website, setWebsite] = useState('');
   const [address, setAddress] = useState('');
 
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
 
   const name = useMemo(() => {
     if (isIssuer) {
@@ -86,8 +88,8 @@ export default function RegisterPage() {
     event.preventDefault();
     setError('');
 
-    if (password.length < 8) {
-      setError('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+      setError('รหัสผ่านต้องมีตัวอักษรภาษาอังกฤษพิมพ์เล็ก พิมพ์ใหญ่ และตัวเลข อย่างน้อย 8 ตัวอักษร');
       return;
     }
 
@@ -101,10 +103,20 @@ export default function RegisterPage() {
       return;
     }
 
+    const requiredCommon = [email, phone, universityNameTh, universityNameEn];
+    const requiredByRole = isIssuer
+      ? [contactFirstNameTh, contactLastNameTh, staffPosition, staffDepartment, address]
+      : [firstNameTh, lastNameTh, birthDate, studentId, faculty, major];
+
+    if ([...requiredCommon, ...requiredByRole].some((value) => !value.trim())) {
+      setError('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      await register(
+      const response = await register(
         isIssuer
           ? {
               role,
@@ -142,7 +154,8 @@ export default function RegisterPage() {
             },
       );
 
-      router.push(isIssuer ? '/issuer/dashboard' : '/holder/dashboard');
+      setRegisteredEmail(response.email);
+      setShowSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
     } finally {
@@ -215,7 +228,7 @@ export default function RegisterPage() {
             <h2 className="text-lg font-bold text-slate-800">ข้อมูลเข้าสู่ระบบ</h2>
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               <Input label="อีเมล" type="email" placeholder={isIssuer ? 'example@educhain.ac.th' : 'student@example.com'} value={email} onChange={(event) => setEmail(event.target.value)} required />
-              <Input label="รหัสผ่าน" type="password" placeholder="อย่างน้อย 8 ตัวอักษร" value={password} onChange={(event) => setPassword(event.target.value)} required />
+              <Input label="รหัสผ่าน" type="password" placeholder="พิมพ์เล็ก พิมพ์ใหญ่ ตัวเลข อย่างน้อย 8 ตัว" value={password} onChange={(event) => setPassword(event.target.value)} required />
               <Input label="ยืนยันรหัสผ่าน" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
             </div>
           </section>
@@ -227,11 +240,32 @@ export default function RegisterPage() {
               มีบัญชีแล้ว? เข้าสู่ระบบ
             </Link>
             <Button type="submit" isLoading={isSubmitting}>
-              สมัครสมาชิก
+              ลงทะเบียน
             </Button>
           </div>
         </form>
       </div>
+
+      {showSuccess ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-7 text-center shadow-xl">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-2xl">✓</div>
+            <h2 className="mt-4 text-xl font-bold text-slate-800">ลงทะเบียนสำเร็จ</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              ระบบส่งลิงก์ยืนยันไปที่ <span className="font-semibold text-slate-800">{registeredEmail}</span> แล้ว
+              กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ
+            </p>
+            <Button
+              type="button"
+              fullWidth
+              className="mt-6"
+              onClick={() => router.push(`/login/${isIssuer ? 'issuer' : 'holder'}`)}
+            >
+              ไปหน้าเข้าสู่ระบบ
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

@@ -58,7 +58,7 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (params: LoginParams) => Promise<AuthUser>;
-  register: (params: RegisterParams) => Promise<AuthUser>;
+  register: (params: RegisterParams) => Promise<RegisterResponse>;
   logout: () => void;
   refreshMe: () => Promise<void>;
 }
@@ -166,11 +166,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         walletAddress: params.walletAddress || undefined,
       });
 
-      saveSession(response.data.accessToken, response.data.user);
-
-      return response.data.user;
+      return response.data;
     },
-    [saveSession],
+    [],
   );
 
   const value = useMemo<AuthContextValue>(

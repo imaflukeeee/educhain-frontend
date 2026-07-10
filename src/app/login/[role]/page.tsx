@@ -7,7 +7,7 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { TopNav } from '@/components/TopNav';
 import { useAuth } from '@/contexts/AuthContext';
-import { getApiErrorMessage } from '@/lib/api';
+import { api, getApiErrorMessage } from '@/lib/api';
 import type { UserRole } from '@/types/api';
 
 export default function LoginPage() {
@@ -25,6 +25,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
+  const [isResending, setIsResending] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,6 +46,27 @@ export default function LoginPage() {
       setError(getApiErrorMessage(err));
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+
+  async function resendVerification() {
+    if (!email.trim()) {
+      setError('กรุณากรอกอีเมลก่อนขอลิงก์ยืนยันใหม่');
+      return;
+    }
+
+    setError('');
+    setResendMessage('');
+    setIsResending(true);
+
+    try {
+      const response = await api.post<{ message: string }>('/auth/resend-verification', { email });
+      setResendMessage(response.data.message);
+    } catch (err) {
+      setError(getApiErrorMessage(err));
+    } finally {
+      setIsResending(false);
     }
   }
 
@@ -84,6 +107,12 @@ export default function LoginPage() {
             />
           </div>
 
+          {resendMessage ? (
+            <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
+              {resendMessage}
+            </div>
+          ) : null}
+
           {error ? (
             <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
               {error}
@@ -93,6 +122,15 @@ export default function LoginPage() {
           <Button type="submit" fullWidth className="mt-5" isLoading={isSubmitting}>
             เข้าสู่ระบบ
           </Button>
+
+          <button
+            type="button"
+            onClick={() => void resendVerification()}
+            disabled={isResending}
+            className="mt-3 w-full text-center text-sm font-semibold text-blue-600 disabled:opacity-50"
+          >
+            {isResending ? 'กำลังส่ง...' : 'ยังไม่ได้รับอีเมลยืนยัน? ส่งอีกครั้ง'}
+          </button>
 
           <p className="mt-4 text-center text-sm text-slate-500">
             ยังไม่มีบัญชี?{' '}

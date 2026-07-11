@@ -17,6 +17,33 @@ const cardStyles = [
   'border-green-100 bg-green-50 text-green-700',
 ] as const;
 
+
+const activityLabels: Record<string, string> = {
+  STUDENT_CREATED: 'เพิ่มข้อมูลนักศึกษาแล้ว',
+  STUDENT_IMPORTED: 'นำเข้ารายชื่อนักศึกษาแล้ว',
+  STUDENT_CLAIMED: 'เชื่อมบัญชีนักศึกษาสำเร็จ',
+  CLAIM_REVIEWED: 'ตรวจสอบข้อมูลนักศึกษาแล้ว',
+  WORKFLOW_SUBMITTED: 'ส่งเอกสารให้ตรวจสอบแล้ว',
+  WORKFLOW_REVIEWED: 'ตรวจสอบเอกสารแล้ว',
+  WORKFLOW_APPROVED: 'อนุมัติเอกสารแล้ว',
+  WORKFLOW_REJECTED: 'ไม่อนุมัติเอกสาร',
+  WORKFLOW_CHANGES_REQUESTED: 'ส่งเอกสารกลับให้แก้ไข',
+};
+
+const entityLabels: Record<string, string> = {
+  StudentRecord: 'ข้อมูลนักศึกษา',
+  Credential: 'เอกสารการศึกษา',
+  DocumentRequest: 'คำร้องเอกสาร',
+};
+
+function getActivityLabel(action: string) {
+  return activityLabels[action] ?? 'มีการอัปเดตข้อมูลในระบบ';
+}
+
+function getEntityLabel(entityType: string) {
+  return entityLabels[entityType] ?? 'รายการในระบบ';
+}
+
 export default function OperationsOverviewPage() {
   const [data, setData] = useState<Phase3Dashboard | null>(null);
   const [error, setError] = useState('');
@@ -67,8 +94,8 @@ export default function OperationsOverviewPage() {
           {data.recentAudit.map((item) => (
             <div key={item.id} className="flex items-center justify-between gap-4 py-3 text-sm">
               <div>
-                <div className="font-semibold text-slate-700">{item.action}</div>
-                <div className="text-slate-400">{item.actor?.name || item.actor?.email || 'ระบบ'} · {item.entityType}</div>
+                <div className="font-semibold text-slate-700">{getActivityLabel(item.action)}</div>
+                <div className="text-slate-400">{item.actor?.name || item.actor?.email || 'ระบบ'} · {getEntityLabel(item.entityType)}</div>
               </div>
               <div className="shrink-0 text-slate-400">{new Date(item.createdAt).toLocaleString('th-TH')}</div>
             </div>
